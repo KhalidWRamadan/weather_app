@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/views/no_weather_view.dart';
+
 import 'package:weather_app/views/weather_view.dart';
 
 class HomeView extends StatelessWidget {
