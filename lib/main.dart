@@ -13,8 +13,6 @@ class WeatherApp extends StatefulWidget {
 }
 
 class _WeatherAppState extends State<WeatherApp> {
-  bool isDark = false;
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(

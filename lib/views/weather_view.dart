@@ -3,7 +3,6 @@ import 'package:weather_app/components/hourly_listview.dart';
 
 class WeatherView extends StatelessWidget {
   const WeatherView({super.key});
-
   @override
   Widget build(BuildContext context) {
     return const Center(
@@ -29,8 +28,8 @@ class WeatherView extends StatelessWidget {
               height: 20,
             ),
             Icon(
-              Icons.sunny,
-              color: Color(0xFFffb200),
+              Icons.cloud,
+              color: Colors.white,
               size: 64,
             ),
             Text(
