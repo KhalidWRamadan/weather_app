@@ -9,26 +9,31 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color(0xFF0b5495),
-        appBar: AppBar(
-          leading: const SizedBox(),
-          title: const Center(child: Text('WeatherApp')),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) {
-                      return const SearchView();
-                    }),
-                  );
-                },
-                icon: const Icon(Icons.search),
-              ),
+      backgroundColor: const Color(0xFF0b5495),
+      appBar: AppBar(
+        leading: const SizedBox(),
+        title: const Center(child: Text('WeatherApp')),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return const SearchView();
+                  }),
+                );
+              },
+              icon: const Icon(Icons.search),
             ),
-          ],
-        ),
-        body: const WeatherView());
+          ),
+        ],
+      ),
+      body: ListView(
+        children: const [
+          WeatherView(),
+        ],
+      ),
+    );
   }
 }
