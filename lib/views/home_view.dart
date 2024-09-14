@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/views/search_view.dart';
-
 import 'package:weather_app/views/weather_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -29,11 +28,7 @@ class HomeView extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: const [
-          WeatherView(),
-        ],
-      ),
+      body: const WeatherView(),
     );
   }
 }

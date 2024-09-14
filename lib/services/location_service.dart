@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class LocationService {
   final Dio _dio = Dio();
 
-  Future<List<double>?> getLocation(String city) async {
+  Future<List<double>> getLocation(String city) async {
     String? apiKey = dotenv.env['location_api_key'];
     try {
       late double lat;

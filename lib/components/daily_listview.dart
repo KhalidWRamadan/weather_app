@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HourlyListView extends StatelessWidget {
-  const HourlyListView({super.key});
+class DailyListView extends StatelessWidget {
+  const DailyListView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class HourlyListView extends StatelessWidget {
           itemBuilder: (context, index) {
             return ClipRRect(
               borderRadius: const BorderRadius.all(
-                Radius.circular(32),
+                Radius.circular(48),
               ),
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -59,9 +59,9 @@ class HourlyListView extends StatelessWidget {
             );
           },
           separatorBuilder: (context, index) => const SizedBox(
-                width: 10,
+                width: 8,
               ),
-          itemCount: 12),
+          itemCount: 6),
     );
   }
 }
