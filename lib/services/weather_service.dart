@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/models/today_weather_model.dart';
+import 'package:weather_app/models/weather_code.dart';
 import 'package:weather_app/services/location_service.dart';
 
 class WeatherService {
@@ -45,10 +46,11 @@ class WeatherService {
       TodayWeatherModel todayModel = TodayWeatherModel(
         updateTime: updateTime,
         city: city,
-        weatherIcon: Icons.cloud,
+        weatherIcon: _getIconFromCode(currentWeatherData['weather_code']),
         currentTemp: currentWeatherData['temperature_2m'].round(),
         feelsTemp: currentWeatherData['apparent_temperature'].round(),
-        weatherDesc: 'sunny',
+        weatherDesc:
+            _getDescriptionFromCode(currentWeatherData['weather_code']),
         day: dayOfWeek,
         minTemp: todayMinTemp.round(), //round the double value
         maxTemp: todayMaxTemp.round(),
@@ -58,5 +60,23 @@ class WeatherService {
       e.stackTrace;
       return null;
     }
+  }
+
+  static String _getDescriptionFromCode(int code) {
+    for (var weather in WeatherCode.values) {
+      if (weather.code == code) {
+        return weather.description;
+      }
+    }
+    return 'Unknown code'; // Return a default value if code is not found
+  }
+
+  static Widget? _getIconFromCode(int code) {
+    for (var weather in WeatherCode.values) {
+      if (weather.code == code) {
+        return weather.icon;
+      }
+    }
+    return null; // Return a default value if code is not found
   }
 }

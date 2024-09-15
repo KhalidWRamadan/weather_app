@@ -14,7 +14,7 @@ class _CurrentWeatherBuilderState extends State<CurrentWeatherBuilder> {
   late Future<TodayWeatherModel?> future;
   @override
   void initState() {
-    future = WeatherService().getWeatherInfo('cairo');
+    future = WeatherService().getWeatherInfo('Gaza');
     super.initState();
   }
 
@@ -35,12 +35,14 @@ class _CurrentWeatherBuilderState extends State<CurrentWeatherBuilder> {
           );
           //no data recieved and no errors happened, show loading indicator
         } else {
-          return const
-              //no scroll while in progress
-              Center(
-            child: CircularProgressIndicator(
-              color: Color(0xFF0b5495),
-              backgroundColor: Colors.white,
+          return const SizedBox(
+            height: double.maxFinite,
+            child: Column(
+              children: [
+                LinearProgressIndicator(
+                  color: Color(0xFFffb200),
+                ),
+              ],
             ),
           );
         }

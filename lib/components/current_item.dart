@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/components/daily_listview.dart';
 import 'package:weather_app/models/today_weather_model.dart';
 
 class CurrentItem extends StatelessWidget {
@@ -11,8 +10,8 @@ class CurrentItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //mainAxisAlignment: MainAxisAlignment.center,
+          //mainAxisAlignment: MainAxisAlignment.,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const Icon(
               Icons.place,
@@ -35,19 +34,15 @@ class CurrentItem extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
-            Icon(
-              data.weatherIcon,
-              color: Colors.white,
-              size: 64,
-            ),
+            data.weatherIcon ?? const Icon(Icons.sunny),
             Text(
               ' ${data.currentTemp}\u00B0',
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 124,
-                fontWeight: FontWeight.w500,
+                fontSize: 92,
+                fontWeight: FontWeight.w400,
               ),
             ),
             Text(
@@ -62,7 +57,7 @@ class CurrentItem extends StatelessWidget {
               data.weatherDesc,
               style: const TextStyle(
                 color: Colors.white,
-                fontSize: 32,
+                fontSize: 28,
                 fontWeight: FontWeight.w500,
               ),
             ),

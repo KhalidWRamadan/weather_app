@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class TodayWeatherModel {
   final String city;
   final String updateTime;
-  final IconData weatherIcon;
+  final Widget? weatherIcon;
   final num currentTemp;
   final num feelsTemp;
   final String weatherDesc;
