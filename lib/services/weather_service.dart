@@ -23,6 +23,7 @@ class WeatherService {
 
       Map<String, dynamic> currentWeatherData = jsonData['current'];
       Map<String, dynamic> dailyWeatherData = jsonData['daily'];
+      Map<String, dynamic> hourlyWeatherData = jsonData['hourly'];
 
       double todayMinTemp = dailyWeatherData['temperature_2m_min'][0];
       double todayMaxTemp = dailyWeatherData['temperature_2m_max'][0];
@@ -54,6 +55,9 @@ class WeatherService {
       weatherModels['current'] = [todayModel];
 
       weatherModels['daily'] = _getDayWeatherInfo(dailyWeatherData);
+
+      weatherModels['hourly'] =
+          _getHourWeatherInfo(hourlyWeatherData, currentWeatherDay);
 
       return weatherModels;
     } on DioException catch (e) {
@@ -108,6 +112,48 @@ class WeatherService {
       );
     }
     return dailyWeatherModels;
+  }
+
+  List<WeatherModel> _getHourWeatherInfo(
+      Map<String, dynamic> hourlyWeatherData, String currentWeatherTime) {
+    var temp = hourlyWeatherData['temperature_2m'];
+    var weatherCode = hourlyWeatherData['weather_code'];
+    var hour = hourlyWeatherData['time'];
+
+    DateTime currentParsedTime = DateTime.parse(
+      currentWeatherTime,
+    );
+
+    List<Widget> hourIcon = [];
+    List<int> avgTemp = [];
+    int numberOfHours = 24;
+    final List<WeatherModel> hourlyWeatherModels = [];
+    int i = 0;
+    int hourCounter = 0;
+    while (i < numberOfHours) {
+      DateTime futureParsedTime = DateTime.parse(
+        hour[hourCounter],
+      );
+      if (!futureParsedTime.isAfter(currentParsedTime)) {
+        hourCounter++;
+        continue;
+      }
+
+      avgTemp.add(temp[i].round());
+      hourIcon.add(_getIconFromCode(weatherCode[i]));
+
+      hourlyWeatherModels.add(
+        WeatherModel(
+          weatherIcon: hourIcon[i],
+          currentTemp: avgTemp[i],
+          day: hour[hourCounter]
+              .substring(hour[i].indexOf('T') + 1, hour[i].length),
+        ),
+      );
+      i++;
+      hourCounter++;
+    }
+    return hourlyWeatherModels;
   }
 
   static String _convertDateToDay(String date) {

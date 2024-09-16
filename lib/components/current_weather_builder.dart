@@ -38,9 +38,11 @@ class _CurrentWeatherBuilderState extends State<CurrentWeatherBuilder> {
               ),
               DailyListView(
                 dailyWeather: snapshot.data!['daily'],
+                itemCount: 7,
               ),
               DailyListView(
-                dailyWeather: snapshot.data!['daily'],
+                dailyWeather: snapshot.data!['hourly'],
+                itemCount: 24,
               ),
             ],
           );
