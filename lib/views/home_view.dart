@@ -8,7 +8,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0b5495),
       appBar: AppBar(
         leading: const SizedBox(),
         title: const Center(child: Text('WeatherApp')),
@@ -28,7 +27,19 @@ class HomeView extends StatelessWidget {
           ),
         ],
       ),
-      body: WeatherView(),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            end: Alignment.bottomCenter,
+            begin: Alignment.topCenter,
+            colors: [
+              Color(0xFF1D5D9B),
+              Color(0xFF75C2F6),
+            ],
+          ),
+        ),
+        child: const WeatherView(),
+      ),
     );
   }
 }

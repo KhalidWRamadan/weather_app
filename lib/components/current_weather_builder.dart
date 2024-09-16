@@ -39,6 +39,9 @@ class _CurrentWeatherBuilderState extends State<CurrentWeatherBuilder> {
               DailyListView(
                 dailyWeather: snapshot.data!['daily'],
               ),
+              DailyListView(
+                dailyWeather: snapshot.data!['daily'],
+              ),
             ],
           );
           //no data recieved and no errors happened, show loading indicator

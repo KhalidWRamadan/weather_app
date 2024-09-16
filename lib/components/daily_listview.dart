@@ -23,8 +23,8 @@ class DailyListView extends StatelessWidget {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        const Color(0xFFc2ced4),
-                        const Color(0xFF0b5495).withOpacity(0),
+                        const Color(0xFF1D5D9B),
+                        const Color(0xFFE2E2B6).withOpacity(0),
                       ],
                     ),
                   ),

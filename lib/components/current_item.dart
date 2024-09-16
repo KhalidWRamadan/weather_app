@@ -11,67 +11,70 @@ class CurrentItem extends StatelessWidget {
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(12),
-        child: Column(
-          //mainAxisAlignment: MainAxisAlignment.,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Icon(
-              Icons.place,
-              color: Color(0xFFffb200),
-            ),
-            Text(
-              data?.city ?? 'Gaza',
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 32,
-                fontWeight: FontWeight.w500,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(
+                Icons.place,
+                color: Color(0xFFFF9874),
               ),
-            ),
-            Text(
-              'Last Update At ${data?.updateTime}',
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w300,
+              Text(
+                data?.city ?? 'Gaza',
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            data?.weatherIcon ?? WeatherCode.clearSky.icon,
-            Text(
-              ' ${data?.currentTemp}\u00B0',
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 92,
-                fontWeight: FontWeight.w400,
+              Text(
+                'Last Update At ${data?.updateTime}',
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w300,
+                ),
               ),
-            ),
-            Text(
-              ' Feels like: ${data?.feelsTemp}\u00B0',
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+              const SizedBox(
+                height: 15,
               ),
-            ),
-            Text(
-              data?.weatherDesc ?? 'Cloudy',
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 28,
-                fontWeight: FontWeight.w500,
+              data?.weatherIcon ?? WeatherCode.clearSky.icon,
+              Text(
+                ' ${data?.currentTemp}\u00B0',
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 92,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            Text(
-              '${data?.day} ${data?.minTemp}\u00B0/${data?.maxTemp}\u00B0',
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+              Text(
+                ' Feels like: ${data?.feelsTemp}\u00B0',
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
+              Text(
+                data?.weatherDesc ?? 'Cloudy',
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 28,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                '${data?.day} ${data?.minTemp}\u00B0/${data?.maxTemp}\u00B0',
+                style: const TextStyle(
+                  color: textColor,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

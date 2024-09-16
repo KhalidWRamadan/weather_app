@@ -7,13 +7,7 @@ class WeatherView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          CurrentWeatherBuilder(),
-          // DailyListView(),
-        ],
-      ),
+      child: CurrentWeatherBuilder(),
     );
   }
 }
