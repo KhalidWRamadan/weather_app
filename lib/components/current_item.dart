@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/models/today_weather_model.dart';
+import 'package:weather_app/models/weather_code.dart';
 
 class CurrentItem extends StatelessWidget {
   const CurrentItem({super.key, required this.data});
-  final TodayWeatherModel data;
+  final WeatherModel? data;
   @override
   Widget build(BuildContext context) {
+    const Color textColor = Colors.white;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(12),
@@ -18,17 +20,17 @@ class CurrentItem extends StatelessWidget {
               color: Color(0xFFffb200),
             ),
             Text(
-              data.city,
+              data?.city ?? 'Gaza',
               style: const TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 32,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Text(
-              'Last Update At ${data.updateTime}',
+              'Last Update At ${data?.updateTime}',
               style: const TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 12,
                 fontWeight: FontWeight.w300,
               ),
@@ -36,35 +38,35 @@ class CurrentItem extends StatelessWidget {
             const SizedBox(
               height: 15,
             ),
-            data.weatherIcon ?? const Icon(Icons.sunny),
+            data?.weatherIcon ?? WeatherCode.clearSky.icon,
             Text(
-              ' ${data.currentTemp}\u00B0',
+              ' ${data?.currentTemp}\u00B0',
               style: const TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 92,
                 fontWeight: FontWeight.w400,
               ),
             ),
             Text(
-              ' Feels like: ${data.feelsTemp}\u00B0',
+              ' Feels like: ${data?.feelsTemp}\u00B0',
               style: const TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Text(
-              data.weatherDesc,
+              data?.weatherDesc ?? 'Cloudy',
               style: const TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 28,
                 fontWeight: FontWeight.w500,
               ),
             ),
             Text(
-              '${data.day} ${data.minTemp}\u00B0/${data.maxTemp}\u00B0',
+              '${data?.day} ${data?.minTemp}\u00B0/${data?.maxTemp}\u00B0',
               style: const TextStyle(
-                color: Colors.white,
+                color: textColor,
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),

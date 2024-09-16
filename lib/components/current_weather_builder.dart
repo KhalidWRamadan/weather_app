@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/components/current_item.dart';
+import 'package:weather_app/components/daily_listview.dart';
 import 'package:weather_app/models/today_weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
 
@@ -11,7 +12,7 @@ class CurrentWeatherBuilder extends StatefulWidget {
 }
 
 class _CurrentWeatherBuilderState extends State<CurrentWeatherBuilder> {
-  late Future<TodayWeatherModel?> future;
+  late Future<Map<String, List<WeatherModel?>>?> future;
   @override
   void initState() {
     future = WeatherService().getWeatherInfo('Gaza');
@@ -30,8 +31,15 @@ class _CurrentWeatherBuilderState extends State<CurrentWeatherBuilder> {
         }
         //data recived successfully
         if (snapshot.hasData) {
-          return CurrentItem(
-            data: snapshot.data!,
+          return Column(
+            children: [
+              CurrentItem(
+                data: snapshot.data!['current']![0]!,
+              ),
+              DailyListView(
+                dailyWeather: snapshot.data!['daily'],
+              ),
+            ],
           );
           //no data recieved and no errors happened, show loading indicator
         } else {

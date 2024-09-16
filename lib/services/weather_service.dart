@@ -7,7 +7,8 @@ import 'package:weather_app/services/location_service.dart';
 
 class WeatherService {
   final Dio _dio = Dio();
-  Future<TodayWeatherModel?> getWeatherInfo(String? city) async {
+
+  Future<Map<String, List<WeatherModel>>?> getWeatherInfo(String? city) async {
     if (city == null) return null;
     List<double> location = await LocationService().getLocation(city);
     double lat = location[0];
@@ -17,6 +18,8 @@ class WeatherService {
       Response response = await _dio.get(
           'https://api.open-meteo.com/v1/forecast?latitude=$lat&longitude=$lng&current=temperature_2m,apparent_temperature,weather_code&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto');
       Map<String, dynamic> jsonData = response.data;
+
+      Map<String, List<WeatherModel>> weatherModels = {};
 
       Map<String, dynamic> currentWeatherData = jsonData['current'];
       Map<String, dynamic> dailyWeatherData = jsonData['daily'];
@@ -43,7 +46,7 @@ class WeatherService {
       String dayOfWeek = dateFormat.format(
           date); // Converts the DateTime object to abbreviated day of the week
 
-      TodayWeatherModel todayModel = TodayWeatherModel(
+      WeatherModel todayModel = WeatherModel(
         updateTime: updateTime,
         city: city,
         weatherIcon: _getIconFromCode(currentWeatherData['weather_code']),
@@ -55,7 +58,11 @@ class WeatherService {
         minTemp: todayMinTemp.round(), //round the double value
         maxTemp: todayMaxTemp.round(),
       );
-      return todayModel;
+      weatherModels['current'] = [todayModel];
+
+      weatherModels['daily'] = _getDayWeatherInfo(dailyWeatherData);
+
+      return weatherModels;
     } on DioException catch (e) {
       e.stackTrace;
       return null;
@@ -71,12 +78,37 @@ class WeatherService {
     return 'Unknown code'; // Return a default value if code is not found
   }
 
-  static Widget? _getIconFromCode(int code) {
+  static Widget _getIconFromCode(int code) {
     for (var weather in WeatherCode.values) {
       if (weather.code == code) {
         return weather.icon;
       }
     }
-    return null; // Return a default value if code is not found
+    return WeatherCode
+        .overcast.icon; // Return a default value if code is not found
+  }
+
+  List<WeatherModel> _getDayWeatherInfo(Map<String, dynamic> dailyWeatherData) {
+    var minTemp = dailyWeatherData['temperature_2m_min'];
+    var maxTemp = dailyWeatherData['temperature_2m_max'];
+    var weatherCode = dailyWeatherData['weather_code'];
+    List<Widget> dayWeatherIcon = [];
+    List<int> avgTemp = [];
+    int numberOfDays = 7;
+    final List<WeatherModel> dailyWeatherModels = [];
+
+    for (var i = 0; i < numberOfDays; i++) {
+      avgTemp.add(((minTemp[i] + maxTemp[i]) / 2).round());
+      dayWeatherIcon.add(_getIconFromCode(weatherCode[i]));
+
+      dailyWeatherModels.add(
+        WeatherModel(
+          weatherIcon: dayWeatherIcon[i],
+          currentTemp: avgTemp[i],
+          day: 'Sun',
+        ),
+      );
+    }
+    return dailyWeatherModels;
   }
 }

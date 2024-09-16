@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/components/daily_listview_item.dart';
+import 'package:weather_app/models/today_weather_model.dart';
 
 class DailyListView extends StatelessWidget {
-  const DailyListView({super.key});
-
+  const DailyListView({super.key, required this.dailyWeather});
+  final List<WeatherModel?>? dailyWeather;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,10 +28,10 @@ class DailyListView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  child: const DailyListviewItem(),
+                  child: DailyListviewItem(weatherInfo: dailyWeather?[index]),
                 );
               },
-              itemCount: 6),
+              itemCount: 7),
         ),
       ),
     );

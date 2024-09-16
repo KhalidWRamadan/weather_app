@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/models/today_weather_model.dart';
+import 'package:weather_app/models/weather_code.dart';
 
 class DailyListviewItem extends StatelessWidget {
-  const DailyListviewItem({super.key});
-
+  const DailyListviewItem({super.key, required this.weatherInfo});
+  final WeatherModel? weatherInfo;
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(4),
+    return Padding(
+      padding: const EdgeInsets.all(4),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Text(
-            'Now',
-            style: TextStyle(
+            weatherInfo?.day ?? '',
+            style: const TextStyle(
               fontSize: 18,
               color: Colors.white,
             ),
           ),
-          Icon(
-            size: 32,
-            Icons.sunny,
-            color: Color(0xFFffb200),
+          SizedBox(
+            child: weatherInfo?.weatherIcon ?? WeatherCode.clearSky.icon,
           ),
           Text(
-            '21\u00B0',
-            style: TextStyle(
+            '${weatherInfo?.currentTemp}\u00B0',
+            style: const TextStyle(
               fontSize: 18,
               color: Colors.white,
             ),
