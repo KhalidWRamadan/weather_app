@@ -34,17 +34,10 @@ class WeatherService {
       String currentDate =
           currentWeatherDay.substring(0, currentWeatherDay.indexOf('T'));
 
+      String dayOfWeek = _convertDateToDay(currentDate);
+
       String updateTime = currentWeatherDay.substring(
           currentWeatherDay.indexOf('T') + 1, currentWeatherDay.length);
-      // Step 1: Parse the date string into a DateTime object (local time)
-      DateTime date =
-          DateTime.parse(currentDate); // Converts to a DateTime object
-
-      // Step 2: Get the abbreviated day of the week using DateFormat from intl package
-      DateFormat dateFormat = DateFormat(
-          'EEE'); // 'EEE' will return the abbreviated day name (e.g., Mon)
-      String dayOfWeek = dateFormat.format(
-          date); // Converts the DateTime object to abbreviated day of the week
 
       WeatherModel todayModel = WeatherModel(
         updateTime: updateTime,
@@ -92,6 +85,7 @@ class WeatherService {
     var minTemp = dailyWeatherData['temperature_2m_min'];
     var maxTemp = dailyWeatherData['temperature_2m_max'];
     var weatherCode = dailyWeatherData['weather_code'];
+    var dayOfWeek = dailyWeatherData['time'];
     List<Widget> dayWeatherIcon = [];
     List<int> avgTemp = [];
     int numberOfDays = 7;
@@ -105,10 +99,26 @@ class WeatherService {
         WeatherModel(
           weatherIcon: dayWeatherIcon[i],
           currentTemp: avgTemp[i],
-          day: 'Sun',
+          day: i == 0
+              ? 'Today'
+              : i == 1
+                  ? 'Tomorrow'
+                  : _convertDateToDay(dayOfWeek[i]),
         ),
       );
     }
     return dailyWeatherModels;
+  }
+
+  static String _convertDateToDay(String date) {
+    // Step 1: Parse the date string into a DateTime object (local time)
+    DateTime dateTime = DateTime.parse(date); // Converts to a DateTime object
+
+    // Step 2: Get the abbreviated day of the week using DateFormat from intl package
+    DateFormat dateFormat = DateFormat(
+        'EEE'); // 'EEE' will return the abbreviated day name (e.g., Mon)
+    String dayOfWeek = dateFormat.format(
+        dateTime); // Converts the DateTime object to abbreviated day of the week
+    return dayOfWeek;
   }
 }
