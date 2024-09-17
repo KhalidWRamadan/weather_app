@@ -25,33 +25,22 @@ class WeatherService {
       Map<String, dynamic> dailyWeatherData = jsonData['daily'];
       Map<String, dynamic> hourlyWeatherData = jsonData['hourly'];
 
-      double todayMinTemp = dailyWeatherData['temperature_2m_min'][0];
-      double todayMaxTemp = dailyWeatherData['temperature_2m_max'][0];
+      // double todayMinTemp = dailyWeatherData['temperature_2m_min'][0];
+      // double todayMaxTemp = dailyWeatherData['temperature_2m_max'][0];
 
       // Example date string returned by the weather API in "YYYY-MM-DD" format
       String currentWeatherDay =
           currentWeatherData['time']; // This is the date string
       //cutting the following hour After the Date
-      String currentDate =
-          currentWeatherDay.substring(0, currentWeatherDay.indexOf('T'));
+      // String currentDate =
+      //     currentWeatherDay.substring(0, currentWeatherDay.indexOf('T'));
 
-      String dayOfWeek = _convertDateToDay(currentDate);
+      // String dayOfWeek = _convertDateToDay(currentDate);
 
-      String updateTime = currentWeatherDay.substring(
-          currentWeatherDay.indexOf('T') + 1, currentWeatherDay.length);
+      // String updateTime = currentWeatherDay.substring(
+      //     currentWeatherDay.indexOf('T') + 1, currentWeatherDay.length);
 
-      WeatherModel todayModel = WeatherModel(
-        updateTime: updateTime,
-        city: city,
-        weatherIcon: _getIconFromCode(currentWeatherData['weather_code']),
-        currentTemp: currentWeatherData['temperature_2m'].round(),
-        feelsTemp: currentWeatherData['apparent_temperature'].round(),
-        weatherDesc:
-            _getDescriptionFromCode(currentWeatherData['weather_code']),
-        day: dayOfWeek,
-        minTemp: todayMinTemp.round(), //round the double value
-        maxTemp: todayMaxTemp.round(),
-      );
+      WeatherModel todayModel = WeatherModel.fromJson(jsonData, city);
       weatherModels['current'] = [todayModel];
 
       weatherModels['daily'] = _getDayWeatherInfo(dailyWeatherData);
@@ -66,14 +55,14 @@ class WeatherService {
     }
   }
 
-  static String _getDescriptionFromCode(int code) {
-    for (var weather in WeatherCode.values) {
-      if (weather.code == code) {
-        return weather.description;
-      }
-    }
-    return 'Unknown code'; // Return a default value if code is not found
-  }
+  // static String _getDescriptionFromCode(int code) {
+  //   for (var weather in WeatherCode.values) {
+  //     if (weather.code == code) {
+  //       return weather.description;
+  //     }
+  //   }
+  //   return 'Unknown code'; // Return a default value if code is not found
+  // }
 
   static Widget _getIconFromCode(int code) {
     for (var weather in WeatherCode.values) {
