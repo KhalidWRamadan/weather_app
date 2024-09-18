@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -25,20 +27,8 @@ class WeatherService {
       Map<String, dynamic> dailyWeatherData = jsonData['daily'];
       Map<String, dynamic> hourlyWeatherData = jsonData['hourly'];
 
-      // double todayMinTemp = dailyWeatherData['temperature_2m_min'][0];
-      // double todayMaxTemp = dailyWeatherData['temperature_2m_max'][0];
-
-      // Example date string returned by the weather API in "YYYY-MM-DD" format
       String currentWeatherDay =
           currentWeatherData['time']; // This is the date string
-      //cutting the following hour After the Date
-      // String currentDate =
-      //     currentWeatherDay.substring(0, currentWeatherDay.indexOf('T'));
-
-      // String dayOfWeek = _convertDateToDay(currentDate);
-
-      // String updateTime = currentWeatherDay.substring(
-      //     currentWeatherDay.indexOf('T') + 1, currentWeatherDay.length);
 
       WeatherModel todayModel = WeatherModel.fromJson(jsonData, city);
       weatherModels['current'] = [todayModel];
@@ -50,19 +40,25 @@ class WeatherService {
 
       return weatherModels;
     } on DioException catch (e) {
-      e.stackTrace;
-      return null;
+      log('Dio error: ${e.message}');
+      if (e.type == DioExceptionType.connectionTimeout) {
+        log("Connection timeout");
+      } else if (e.type == DioExceptionType.badResponse) {
+        log("Received invalid response: ${e.response?.data}");
+      } else if (e.type == DioExceptionType.cancel) {
+        log("Request canceled");
+      } else if (e.type == DioExceptionType.connectionError) {
+        log("Connection Error, try checking later!: ${e.message}");
+      } else {
+        log("Unknown error: ${e.message}");
+      }
+      return null; // Return null or handle error accordingly
+    } catch (e, stacktrace) {
+      log("Unexpected error: $e");
+      log("Stacktrace: $stacktrace");
+      return null; // Handle generic exceptions
     }
   }
-
-  // static String _getDescriptionFromCode(int code) {
-  //   for (var weather in WeatherCode.values) {
-  //     if (weather.code == code) {
-  //       return weather.description;
-  //     }
-  //   }
-  //   return 'Unknown code'; // Return a default value if code is not found
-  // }
 
   static Widget _getIconFromCode(int code) {
     for (var weather in WeatherCode.values) {
