@@ -16,11 +16,14 @@ class SearchView extends StatelessWidget {
           ),
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Center(
           child: TextField(
-            decoration: InputDecoration(
+            onSubmitted: (value) async {
+              //WeatherModel weatherModel = await WeatherService().getWeatherInfo(value);
+            },
+            decoration: const InputDecoration(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 24, horizontal: 16),
               suffixIcon: Icon(Icons.search),
