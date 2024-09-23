@@ -6,6 +6,7 @@ import 'package:weather_app/views/home_view.dart';
 
 void main() async {
   await dotenv.load(fileName: 'api.env');
+  // await AutoCompleteService().getCityAutoComplete('cai');
   runApp(const WeatherApp());
 }
 

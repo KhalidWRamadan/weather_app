@@ -7,6 +7,8 @@ class WeatherStates {}
 
 class WeatherInitialState extends WeatherStates {}
 
+class WeatherLoadingState extends WeatherStates {}
+
 class WeatherLoadedState extends WeatherStates {
   final Map<String, List<WeatherModel>>? weatherModel;
 

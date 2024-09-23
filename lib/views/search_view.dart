@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/cubits/get_weather_cubit/get_weather_cubit.dart';
+import 'package:weather_app/models/city_model.dart';
+import 'package:weather_app/services/auto_complete_service.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({super.key});
@@ -21,30 +23,42 @@ class SearchView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32),
         child: Center(
-          child: TextField(
-            onSubmitted: (value) async {
-              //calling the cubit in the place that will trigger the needed logic
-              //we pass GetWeatherCubit so it can know the scope of this cubit
+          child: Autocomplete(
+            onSelected: (option) async {
               GetWeatherCubit getWeatherCubit =
                   BlocProvider.of<GetWeatherCubit>(context);
-              //triggering the getWeather method to fetch the data and pass
-              //the entered city
-              getWeatherCubit.getWeather(cityName: value);
-              Navigator.of(context).pop();
+              getWeatherCubit.getWeather(cityName: option);
+              await Future<void>.delayed(const Duration(milliseconds: 1000));
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
-            decoration: const InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              suffixIcon: Icon(Icons.search),
-              label: Text('Search'),
-              hintText: 'Enter City Name',
-              hintMaxLines: 1,
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.red,
+            optionsBuilder: (textEditingValue) async {
+              List<String>? suggestions = await AutoCompleteService()
+                  .getCityAutoComplete(textEditingValue.text.toLowerCase());
+
+              return suggestions ?? [''];
+            },
+            //building the decoration
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
+              return TextField(
+                controller: textEditingController,
+                focusNode: focusNode,
+                decoration: const InputDecoration(
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+                  suffixIcon: Icon(Icons.search),
+                  label: Text('Search'),
+                  hintText: 'Enter City Name',
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ),

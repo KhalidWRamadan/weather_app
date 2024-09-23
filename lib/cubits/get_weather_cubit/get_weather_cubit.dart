@@ -8,9 +8,12 @@ class GetWeatherCubit extends Cubit<WeatherStates> {
   GetWeatherCubit() : super(WeatherInitialState());
 
   getWeather({required String cityName}) async {
+    // bool isLoading = true;
     try {
+      emit(WeatherLoadingState());
       Map<String, List<WeatherModel>>? weatherInfo =
           await WeatherService().getWeatherInfo(cityName);
+
       //emit is used to send a state to the ui so the ui can be updated
       emit(WeatherLoadedState(weatherModel: weatherInfo));
     } catch (_) {

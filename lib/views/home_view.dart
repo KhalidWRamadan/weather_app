@@ -46,7 +46,11 @@ class HomeView extends StatelessWidget {
         //the bloc takes the cubit and it's states as a generic type
         child: BlocBuilder<GetWeatherCubit, WeatherStates>(
           builder: (context, state) {
-            if (state is WeatherLoadedState) {
+            if (state is WeatherLoadingState) {
+              return const Scaffold(
+                body: LinearProgressIndicator(),
+              );
+            } else if (state is WeatherLoadedState) {
               return WeatherView(
                 weatherInfo: state.weatherModel,
               );
