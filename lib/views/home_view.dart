@@ -1,30 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:weather_app/cubits/get_weather_cubit/get_weather_cubit.dart';
 import 'package:weather_app/cubits/get_weather_cubit/get_weather_states.dart';
+import 'package:weather_app/services/auto_complete_service.dart';
 import 'package:weather_app/views/no_weather_view.dart';
-import 'package:weather_app/views/search_view.dart';
 import 'package:weather_app/views/weather_view.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  bool _isSearching = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(),
-        title: const Center(child: Text('WeatherApp')),
+        title: _isSearching
+            ? typeAheadField(context)
+            : const Center(
+                child: Text('WeatherApp'),
+              ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) {
-                    return const SearchView();
-                  }),
-                );
+                setState(() {
+                  _isSearching = true;
+                });
               },
               icon: const Icon(Icons.search),
             ),
@@ -47,9 +57,7 @@ class HomeView extends StatelessWidget {
         child: BlocBuilder<GetWeatherCubit, WeatherStates>(
           builder: (context, state) {
             if (state is WeatherLoadingState) {
-              return const Scaffold(
-                body: LinearProgressIndicator(),
-              );
+              return const LinearProgressIndicator();
             } else if (state is WeatherLoadedState) {
               return WeatherView(
                 weatherInfo: state.weatherModel,
@@ -64,6 +72,42 @@ class HomeView extends StatelessWidget {
           },
         ),
       ),
+    );
+  }
+
+  TypeAheadField<String> typeAheadField(BuildContext context) {
+    return TypeAheadField(
+      builder: (context, controller, focusNode) {
+        return TextField(
+          controller: controller,
+          focusNode: focusNode,
+          autofocus: true,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: 'City',
+          ),
+        );
+      },
+      suggestionsCallback: (pattern) async {
+        // Implement suggestion logic here
+        List<String>? suggestions = await AutoCompleteService()
+            .getCityAutoComplete(pattern.toLowerCase());
+
+        return suggestions ?? List<String>.empty();
+      },
+      itemBuilder: (context, suggestion) {
+        return ListTile(
+          title: Text(suggestion),
+        );
+      },
+      onSelected: (suggestion) {
+        GetWeatherCubit getWeatherCubit =
+            BlocProvider.of<GetWeatherCubit>(context);
+        getWeatherCubit.getWeather(cityName: suggestion);
+        setState(() {
+          _isSearching = false;
+        });
+      },
     );
   }
 }
