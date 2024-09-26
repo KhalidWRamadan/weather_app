@@ -82,6 +82,9 @@ class _HomeViewState extends State<HomeView> {
           controller: controller,
           focusNode: focusNode,
           autofocus: true,
+          onSubmitted: (value) => setState(() {
+            _isSearching = false;
+          }),
           decoration: const InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'City',
